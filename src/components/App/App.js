@@ -14,6 +14,59 @@ class App extends Component {
     cardNumber: ''
   };
 
+  handleTabClick = step => {
+    this.setState(() => ({
+      step
+    }));
+  };
+
+  handleClickNextForm = e => {
+    const { step } = this.state;
+    this.setState(() => ({
+      step: step >= 3 ? 3 : step + 1
+    }));
+  };
+
+  handleChangeForm = (name, value) => {
+    this.setState(() => ({
+      [name]: value
+    }));
+  };
+
+  renderForm = () => {
+    switch (this.state.step) {
+      case 1:
+        return (
+          <PersonalForm
+            firstName={this.state.firstName}
+            lastName={this.state.lastName}
+            email={this.state.email}
+            onChangeForm={this.handleChangeForm}
+          />
+        );
+      case 2:
+        return (
+          <CardForm
+            cardNumber={this.state.cardNumber}
+            onChangeForm={this.handleChangeForm}
+          />
+        );
+      case 3:
+        return <p data-test="congratulations">Поздравляем!</p>;
+      default:
+        return (
+          <PersonalForm
+            firstName={this.state.firstName}
+            lastName={this.state.lastName}
+            email={this.state.email}
+            onChangeForm={this.handleChangeForm}
+          />
+        );
+    }
+  };
+
+  isFormCommitable = () => {};
+
   render() {
     const isSelected = number => {
       if (number === this.state.step) {
@@ -42,6 +95,7 @@ class App extends Component {
               <Step
                 key={number}
                 number={number}
+                onClick={this.handleTabClick}
                 isClickable={isClickable(number)}
                 isSelected={isSelected(number)}
               >
@@ -52,7 +106,11 @@ class App extends Component {
         </div>
         <div className="form-content" />
         <div className="button-panel">
-          <button className="button-next" onClick="">
+          <button
+            className="button-next"
+            onClick={this.handleClickNextForm}
+            disabled={!this.isFormCommitable()}
+          >
             Next
           </button>
         </div>
