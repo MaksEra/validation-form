@@ -15,6 +15,18 @@ class App extends Component {
   };
 
   render() {
+    const isSelected = number => {
+      if (number === this.state.step) {
+        return true;
+      }
+      return false;
+    };
+    const isClickable = number => {
+      if (number < this.state.step) {
+        return true;
+      }
+      return false;
+    };
     const tabs = [
       { number: 1, title: 'Personal information' },
       { number: 2, title: 'Card information' },
@@ -27,7 +39,12 @@ class App extends Component {
           {tabs.map(tab => {
             const { number, title } = tab;
             return (
-              <Step key={number} number={number}>
+              <Step
+                key={number}
+                number={number}
+                isClickable={isClickable(number)}
+                isSelected={isSelected(number)}
+              >
                 {title}
               </Step>
             );
