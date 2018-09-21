@@ -65,7 +65,23 @@ class App extends Component {
     }
   };
 
-  isFormCommitable = () => {};
+  isFormCommitable = () => {
+    const { firstName, lastName, email, cardNumber, step } = this.state;
+    const step1 =
+      firstName !== '' &&
+      lastName !== '' &&
+      email !== '' &&
+      email.includes('@');
+    const step2 = cardNumber.length === 16;
+    switch (step) {
+      case 1:
+        return step1;
+      case 2:
+        return step2;
+      default:
+        return false;
+    }
+  };
 
   render() {
     const isSelected = number => {
@@ -104,7 +120,7 @@ class App extends Component {
             );
           })}
         </div>
-        <div className="form-content" />
+        <div className="form-content">{this.renderForm()}</div>
         <div className="button-panel">
           <button
             className="button-next"
